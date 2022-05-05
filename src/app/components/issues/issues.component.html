@@ -1,0 +1,2 @@
+<app-new-issue (submitNew)="onSubmit($event)"></app-new-issue>
+<app-issue-list (search)="onSearch($event)" (resolve)="onResolve($event)" *ngIf="issues$ | async as issues" [issues]="issues"></app-issue-list>

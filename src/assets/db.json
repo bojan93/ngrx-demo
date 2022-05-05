@@ -1,0 +1,11 @@
+{
+  "issues": [
+    {
+      "id": "123abc",
+      "title": "issue from backend",
+      "description": "lorem ipsum",
+      "priority": "high",
+      "resolved": true
+    }
+  ]
+}
