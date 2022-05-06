@@ -1,5 +1,6 @@
 import {RootState} from "../index";
-import {createSelector} from "@ngrx/store";
+import {createSelector, select} from "@ngrx/store";
+import {pipe, skipWhile} from "rxjs";
 
 export interface IssueStats {
   total: number;
@@ -18,6 +19,10 @@ export const selectFilter = createSelector(
   ({filter}) => filter
 );
 
+export const selectLoaded = createSelector(
+  selectFeature,
+  ({loaded}) => loaded
+);
 
 export const selectAll = createSelector(
   selectIssues,
@@ -33,6 +38,11 @@ export const selectAllFiltered = createSelector(
     }
     return issuesArr;
 });
+
+export const selectAllFilteredLoaded = () => pipe(
+  skipWhile((state: RootState) => !selectLoaded(state)),
+  select(selectAllFiltered)
+);
 
 export const selectStats = createSelector(
   selectAll,

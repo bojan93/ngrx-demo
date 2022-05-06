@@ -7,4 +7,5 @@ export interface Issues {
 export interface IssueState {
   issues: Issues;
   filter: string;
+  loaded: boolean;
 }

@@ -4,8 +4,7 @@ import { Issue } from 'src/app/models/issue';
 import {Store} from "@ngrx/store";
 import {RootState} from "../../store";
 import {resolveIssue, searchIssue, submitIssue} from "../../store/issue/issue.action";
-import {selectAllFiltered} from "../../store/issue/issue.selector";
-import {randomId} from "../../utils/util";
+import {selectAllFilteredLoaded} from "../../store/issue/issue.selector";
 
 @Component({
   selector: 'app-issues',
@@ -16,7 +15,7 @@ export class IssuesComponent {
   issues$: Observable<Issue[]>;
 
   constructor(private store: Store<RootState>) {
-    this.issues$ = this.store.select(selectAllFiltered);
+    this.issues$ = this.store.pipe(selectAllFilteredLoaded());
   }
 
   onSearch(text: string): void {
@@ -28,6 +27,6 @@ export class IssuesComponent {
   }
 
   onSubmit(issue: Issue): void {
-    this.store.dispatch(submitIssue({issue: {...issue, id: randomId()}}));
+    this.store.dispatch(submitIssue({issue}));
   }
 }

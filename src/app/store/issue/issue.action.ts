@@ -6,10 +6,23 @@ export const submitIssue = createAction(
   props<{issue: Issue}>()
 );
 
+export const submitSuccess = createAction(
+  '[Issue] Submit success',
+  props<{issue: Issue}>()
+);
+
 export const resolveIssue = createAction(
   '[Issue] Resolve',
   props<{id: string}>()
 );
+
+export const resolveSuccess = createAction(
+  '[Issue] Resolve success'
+);
+
+export const resolveFailure = createAction(
+  '[Issue] Resolve failure',
+  props<{id: string}>());
 
 export const searchIssue = createAction(
   '[Issue] Search',

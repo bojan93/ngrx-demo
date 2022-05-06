@@ -1,11 +1,18 @@
-import {Actions, createEffect, ofType, OnInitEffects} from "@ngrx/effects";
+import {act, Actions, createEffect, ofType, OnInitEffects} from "@ngrx/effects";
 import {Injectable} from "@angular/core";
-import {loadIssues, loadSuccess} from "./issue.action";
-import {map, switchMap} from "rxjs";
+import {
+  loadIssues,
+  loadSuccess, resolveFailure,
+  resolveIssue,
+  resolveSuccess,
+  submitIssue,
+  submitSuccess
+} from "./issue.action";
+import {catchError, map, mergeMap, of, switchMap} from "rxjs";
 import {IssuesService} from "../../services/issues.service";
 
 @Injectable()
-export class IssueEffects {
+export class IssueEffects implements OnInitEffects{
   constructor(private actions$: Actions, private issuesService: IssuesService) {
   }
 
@@ -16,4 +23,26 @@ export class IssueEffects {
     }),
     map(issues => loadSuccess({issues}))
   ));
+
+  submitIssue$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(submitIssue),
+      mergeMap((action) => this.issuesService.saveIssue(action.issue)),
+      map(issue => submitSuccess({issue}))
+    )
+  );
+
+  resolveIssue$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(resolveIssue),
+      mergeMap((action) => this.issuesService.resolveIssue(action.id).pipe(
+        map(() => resolveSuccess()),
+        catchError(() => of(resolveFailure({id: action.id})))
+      )),
+    )
+  );
+
+   ngrxOnInitEffects() {
+     return loadIssues();
+   }
 }

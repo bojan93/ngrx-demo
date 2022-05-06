@@ -1,21 +1,22 @@
 import {Issues, IssueState} from "./issue.state";
 import {createReducer, on} from "@ngrx/store";
-import {loadSuccess, resolveIssue, searchIssue, submitIssue} from "./issue.action";
-import {IssueStats} from "./issue.selector";
+import {
+  loadSuccess, resolveFailure,
+  resolveIssue,
+  searchIssue,
+  submitSuccess
+} from "./issue.action";
 
-const initialState: IssueState = {issues: {}, filter: ''};
+const initialState: IssueState = {issues: {}, filter: '', loaded: false};
 
 export const issueReducer = createReducer(
   initialState,
-  on(submitIssue, (state: IssueState, {issue}) => {
+  on(submitSuccess, (state: IssueState, {issue}) => {
     return {
       ...state,
       issues: {
         ...state.issues,
-        [issue.id]: {
-          ...issue,
-          resolved: false
-        }
+        [issue.id]: issue
       }
     };
   }),
@@ -31,6 +32,18 @@ export const issueReducer = createReducer(
       }
     }
   }),
+  on(resolveFailure, (state: IssueState, {id}) => {
+    return {
+      ...state,
+      issues: {
+        ...state.issues,
+        [id]: {
+          ...state.issues[id],
+          resolved: false
+        }
+      }
+    }
+  }),
   on(searchIssue, (state: IssueState, {text}) => {
     return {
       ...state,
@@ -38,7 +51,6 @@ export const issueReducer = createReducer(
     }
   }),
   on(loadSuccess, (state: IssueState, {issues}) => {
-    console.log('running load success in reducer');
     const entities: Issues = {};
     issues.forEach(issue => entities[issue.id] = issue);
     return {

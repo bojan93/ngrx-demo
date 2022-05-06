@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "start-server": "json-server --no-cors src/assets/db.json"
+    "start-server": "node src/assets/server.js"
   },
   "private": true,
   "dependencies": {
