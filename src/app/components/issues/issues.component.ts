@@ -16,7 +16,7 @@ export class IssuesComponent {
   issues$: Observable<Issue[]>;
 
   constructor(private store: Store<RootState>) {
-    this.issues$ = this.store.select(selectAllFiltered);
+    this.issues$ = this.store.select(selectAllFiltered)
   }
 
   onSearch(text: string): void {

@@ -18,10 +18,9 @@ export const selectFilter = createSelector(
   ({filter}) => filter
 );
 
-
 export const selectAll = createSelector(
   selectIssues,
-  issues => issues ? Object.values(issues) : []
+  issues => Object.values(issues)
 );
 
 export const selectAllFiltered = createSelector(
@@ -41,4 +40,9 @@ export const selectStats = createSelector(
     const resolved = issuesArr.filter(e => e.resolved).length;
     return {total, resolved} as IssueStats;
   }
+);
+
+const selectIssueById = (id: string) => createSelector(
+  selectIssues,
+  issues => issues[id]
 );
