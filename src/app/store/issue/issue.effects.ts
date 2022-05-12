@@ -42,6 +42,7 @@ export class IssueEffects implements OnInitEffects{
     )
   );
 
+  // on class initialization
    ngrxOnInitEffects() {
      return loadIssues();
    }
