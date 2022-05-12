@@ -42,6 +42,8 @@ export class IssueEffects implements OnInitEffects{
     )
   );
 
+  // non-dispatching effects
+
   // on class initialization
    ngrxOnInitEffects() {
      return loadIssues();
