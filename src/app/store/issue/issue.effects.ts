@@ -1,4 +1,4 @@
-import {act, Actions, createEffect, ofType, OnInitEffects} from "@ngrx/effects";
+import {Actions, createEffect, ofType, OnInitEffects} from "@ngrx/effects";
 import {Injectable} from "@angular/core";
 import {
   loadIssues,
@@ -8,7 +8,7 @@ import {
   submitIssue,
   submitSuccess
 } from "./issue.action";
-import {catchError, map, mergeMap, of, switchMap} from "rxjs";
+import {catchError, map, of, mergeMap} from "rxjs";
 import {IssuesService} from "../../services/issues.service";
 
 @Injectable()
@@ -18,7 +18,7 @@ export class IssueEffects implements OnInitEffects{
 
   loadIssues$ = createEffect(() => this.actions$.pipe(
     ofType(loadIssues),
-    switchMap(() => {
+    mergeMap(() => {
       return this.issuesService.getIssues();
     }),
     map(issues => loadSuccess({issues}))
